@@ -10,9 +10,11 @@ export default function ContactList() {
    const visibleContacts = contacts?.filter(item => item.name.toLowerCase().includes(filter.toLowerCase()));
 
    return (
-      <ul className={style.list}>
+      <>
+      {visibleContacts.length > 0 ? (
+         <ul className={style.list}>
          {isLoading ? (
-                <p>Loading...</p>
+               <p>Loading...</p>
             ) : 
          (visibleContacts.map(({id, name, number }) => (
             <ContactItem
@@ -23,4 +25,9 @@ export default function ContactList() {
             />
          )))}
       </ul>
+      ) : (
+         <p>List is empty</p>
+      )
+      }
+      </>   
 )};
