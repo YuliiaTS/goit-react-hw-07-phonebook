@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux';
 import ContactItem from '../ContactList/ContactItem';
 import style from '../ContactList/ContactList.module.css';
-import { useFetchContactsQuery } from '../../redux/contact/contactsApi';
+import { useGetContactsQuery } from '../../redux/contact/contactsApi';
 
 export default function ContactList() {
-   const { data: contacts, isLoading } = useFetchContactsQuery();
+   const { data: contacts, isLoading } = useGetContactsQuery();
    const filter = useSelector(state => state.filter);
 
    const visibleContacts = contacts?.filter(item => item.name.toLowerCase().includes(filter.toLowerCase()));
