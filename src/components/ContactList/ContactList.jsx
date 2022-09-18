@@ -1,21 +1,26 @@
-import { getVisibleContacts } from '../../redux/contact/filter';
 import { useSelector } from 'react-redux';
 import ContactItem from '../ContactList/ContactItem';
 import style from '../ContactList/ContactList.module.css';
+import { useFetchContactsQuery } from '../../redux/contact/contactsApi';
 
 export default function ContactList() {
-   const phoneContacts = useSelector(getVisibleContacts);
+   const { data: contacts, isLoading } = useFetchContactsQuery();
+   const filter = useSelector(state => state.filter);
+
+   const visibleContacts = contacts?.filter(item => item.name.toLowerCase().includes(filter.toLowerCase()));
 
    return (
       <ul className={style.list}>
-         {phoneContacts.map(({id, name, number }) => (
+         {isLoading ? (
+                <p>Loading...</p>
+            ) : 
+         (visibleContacts.map(({id, name, number }) => (
             <ContactItem
                key={id}
                id={id}
                name={name}
                number={number}
             />
-         ))}
+         )))}
       </ul>
-   );
-};
+)};

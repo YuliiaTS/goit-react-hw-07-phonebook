@@ -1,28 +1,33 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from './../../redux/contact/actions';
-import { getContacts } from '../../redux/contact/filter';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { addContact } from 'redux/contact/actions';
+// import { getContacts } from 'redux/contact/filter';
+// import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
+import { useAddContactMutation, useFetchContactsQuery } from '../../redux/contact/contactsApi';
+// import { useFetchContactsQuery } from 'redux/contacts/contactsApi';
 import style from '../ContactForm/ContactForm.module.css';
 
 export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const contacts = useSelector(getContacts);
-  const dispatch = useDispatch();
+  // const contacts = useSelector(getContacts);
+  // const dispatch = useDispatch();
+  const { data } = useFetchContactsQuery();
+  const [addContact, { isLoading }] = useAddContactMutation();
+
 
   const nameInputId = nanoid();
   const numberInputId = nanoid();
 
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  // useEffect(() => {
+  //   localStorage.setItem('contacts', JSON.stringify(contacts));
+  // }, [contacts]);
 
-  const onSubmitForm = e => {
+  const onSubmitForm = async e => {
     e.preventDefault();
 
-    dispatch(addContact(name, number));
+    await addContact({ name, number });
     setName('');
     setNumber('');
   };
@@ -62,6 +67,6 @@ export default function ContactForm() {
   );
 }
 
-ContactForm.propType = {
-  onSubmit: PropTypes.func.isRequired,
-};
+// ContactForm.propType = {
+//   onSubmit: PropTypes.func.isRequired,
+// };

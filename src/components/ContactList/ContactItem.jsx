@@ -1,17 +1,18 @@
 import PropTypes from 'prop-types';
 import style from '../ContactList/ContactList.module.css';
-import { useDispatch } from 'react-redux';
-import { deleteContact } from '../../redux/contact/actions';
+// import { useDispatch } from 'react-redux';
+// import { deleteContact } from 'redux/contact/actions';
+import { useDeleteContactMutation } from '../../redux/contact/contactsApi';
 
-export default function ContactItem({ id, name, number}) {
-  const dispatch = useDispatch();
+export default function ContactItem({ id, name, number }) {
+  const [deleteContact] = useDeleteContactMutation();
   return (
     <li className={style.item} id={id}>
       {name}: {number}
       <button
         className={style.btn}
         type="button"
-        onClick={() => dispatch(deleteContact(id))}
+        onClick={() => (deleteContact(id))}
       >
         Delete
       </button>
